@@ -1,0 +1,14 @@
+.env
+otcs_config.json
+__pycache__/
+*.py[cod]
+*.db
+logs/
+input files/
+output files/
+reports/
+downloads/
+pdfs/
+videos/
+history.json
+system_log.txt

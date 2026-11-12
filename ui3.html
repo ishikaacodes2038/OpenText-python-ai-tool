@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <title>OpenText Content Server</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html{
+      scroll-behavior: smooth;
+    }
+
+    #solutions-section {
+      scroll-margin-top: 80px;
+    }
+    
+    #contact-popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.7);
+  z-index: 2000;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+}
+
+#contact-popup > div {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+#contact-popup h2 {
+  color: #005eb8;
+  margin-bottom: 20px;
+}
+
+#contact-popup h3 {
+  color: #005eb8;
+  margin-bottom: 10px;
+}
+
+#contact-popup button {
+  background: #005eb8;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#contact-popup button:hover {
+  background: #003d7a;
+}
+
+    body {
+      font-family: 'Segoe UI', sans-serif, sans-serif;
+      color: #1f9fcf;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    .top {
+      max-height: 100%;
+    }
+
+    .video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      filter: brightness(0.7);
+    }
+
+    .get-started {
+      display: inline-block;
+      background: linear-gradient(135deg, #005eb8, #00a3e0);
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 15px 30px;
+      border-radius: 30px;
+      text-decoration: none;
+      text-align: center;
+      margin: 20px 0;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 94, 184, 0.4);
+    }
+
+    .get-started:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(0, 94, 184, 0.6);
+    }
+
+    header {
+      width: 100%;
+      padding: 10px;
+      background-color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+    }
+
+    .logo {
+      padding-left: 20px;
+    }
+
+    .logo img {
+      width: 180px;
+      height: auto;
+      filter: none;
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 15px;
+      padding-right: 20px;
+    }
+
+    .header-buttons a {
+    display: inline-block;
+    background: linear-gradient(135deg, #005eb8, #00a3e0);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 9px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    text-align: center;
+    margin: -2px 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 94, 184, 0.4);
+}
+
+    .header-buttons a:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(0, 94, 184, 0.6);
+    }
+
+    #login-popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(5px);
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .login-container {
+      background: linear-gradient(145deg, #ffffff, #f8f9fa);
+      padding: 40px;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      transform: scale(0.95);
+      transition: transform 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .login-container:hover {
+      transform: scale(1);
+    }
+
+    .login-header {
+      margin-bottom: 30px;
+    }
+
+    .login-header img {
+    width: 320px;
+    height: 55px;
+    margin-bottom: 11px;
+}
+
+    .login-header h2 {
+      color: #005eb8;
+      margin: 0;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .login-header p {
+      color: #6c757d;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    .login-btn {
+      background: linear-gradient(135deg, #005eb8, #00a3e0);
+      color: white;
+      border: none;
+      padding: 14px 30px;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      width: 100%;
+      box-shadow: 0 4px 15px rgba(0, 94, 184, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 94, 184, 0.6);
+    }
+
+    .login-btn:active {
+      transform: translateY(0);
+    }
+
+    .login-btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: rgba(255, 255, 255, 0.1);
+      transform: rotate(45deg);
+      transition: all 0.3s;
+    }
+
+    .login-btn:hover::after {
+      left: 100%;
+    }
+
+    .content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 100px 10% 50px;
+      text-align: left;
+      background: linear-gradient(90deg, #051f37, #061a2d, #205a92);
+    }
+
+
+    .text-content img{
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3));
+      width: 60px;
+      height: auto;
+    }
+    .text-content {
+      flex: 1;
+      max-width: 50%;
+      padding-right: 50px;
+    }
+
+    .video-container {
+      flex: 1;
+      max-width: 50%;
+    }
+
+    .video-container video {
+      width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .company-name {
+      font-size: 48px;
+      font-weight: 700;
+      color: white;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 30px;
+      opacity: 0.9;
+    }
+
+    .lower {
+      background: white;
+      width: 100%;
+      padding: 40px 0;
+      margin-top: 0;
+      backdrop-filter: blur(5px);
+    }
+
+    .left-text {
+      width: 80%;
+      max-width: 1200px;
+      padding: 20px;
+      text-align: center;
+      margin: 0 auto 40px;
+    }
+
+    .left-text h1 {
+      font-size: 36px;
+      font-weight: revert;
+      color: #00376b;
+      margin-bottom: 20px;
+    }
+
+    .left-text p {
+      font-size: 18px;
+      color: #00376b;
+      line-height: 1.6;
+    }
+
+    .flashcards-section {
+      width: 100%;
+      padding: 20px 0 40px;
+      background: linear-gradient(135deg, #f5f9ff, #e6f0ff);
+      position: relative;
+    }
+
+    .flashcards-container {
+      display: flex;
+      gap: 25px;
+      padding: 20px 50px;
+      max-width: 100%;
+      width: 100%;
+      margin: 0 auto;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .flashcards-container::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .flashcards-container::-webkit-scrollbar-track {
+      background: rgba(0, 94, 184, 0.1);
+      border-radius: 10px;
+    }
+
+    .flashcards-container::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #005eb8, #00a3e0);
+      border-radius: 10px;
+    }
+
+    .flashcard {
+      flex: 0 0 300px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      padding: 30px;
+      text-align: center;
+      color: white;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      scroll-snap-align: start;
+      cursor: pointer;
+    }
+
+    .flashcard::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 0;
+      transition: all 0.3s ease;
+    }
+
+    .flashcard:hover::before {
+      background: rgba(0, 94, 184, 0.7);
+    }
+
+    .flashcard > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .flashcard h3 {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .flashcard p {
+      font-size: 16px;
+      margin-bottom: 25px;
+      line-height: 1.5;
+      transition: all 0.3s ease;
+      opacity: 0.9;
+    }
+
+    .flashcard .btn {
+      background: linear-gradient(135deg, #005eb8, #00a3e0);
+      padding: 12px 30px;
+      border: none;
+      border-radius: 30px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 94, 184, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .flashcard .btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: rgba(255, 255, 255, 0.1);
+      transform: rotate(45deg);
+      transition: all 0.3s;
+    }
+
+    .flashcard .btn:hover::after {
+      left: 100%;
+    }
+
+    .flashcard .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 94, 184, 0.6);
+    }
+
+    .flashcard:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .flashcard:hover h3 {
+      transform: translateY(-5px);
+    }
+
+    .flashcard:hover p {
+      transform: translateY(-5px);
+    }
+
+    .flashcard-icon {
+      font-size: 40px;
+      margin-bottom: 20px;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .flashcard:hover .flashcard-icon {
+      transform: scale(1.2) rotate(5deg);
+    }
+
+    .scroll-indicator {
+      text-align: center;
+      margin-top: 15px;
+      color: #005eb8;
+      font-size: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .scroll-indicator i {
+      margin-left: 8px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {transform: translateX(0);}
+      40% {transform: translateX(-10px);}
+      60% {transform: translateX(-5px);}
+    }
+
+    .footer {
+    background: linear-gradient(135deg, #001a3a, #00376b);
+    padding: 17px 0 8px;
+    border-top: 1px solid #e1e4e8;
+  }
+  
+    .footer-content {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      max-width: 900px;
+      margin: 0 auto;
+      gap: 40px;
+    }
+    
+    .footer-section {
+      min-width: 160px;
+    }
+    
+    .footer-section h4 {
+      color: #31c4e6;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    
+    .footer-section a {
+      display: block;
+      color: #f8fafc;
+      font-size: 14px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    
+    .footer-section a:hover {
+      color: #2a90f0;
+    }
+    
+    .social-icons {
+      display: flex;
+      gap: 16px;
+      margin-top: 10px;
+    }
+    
+    .social-icons a {
+      color: #eaeef2;
+      font-size: 18px;
+      transition: color 0.2s;
+    }
+    
+    .social-icons a:hover {
+      color: #2a90f0;
+    }
+    
+    .footer {
+      background: linear-gradient(135deg, #001a3a, #00376b);
+      padding: 40px 0 20px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .footer-content-wrapper {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .footer-logo-container {
+      text-align: center;
+      margin: 0 auto 30px;
+      width: 100%;
+    }
+
+    .footer-logo {
+      width: 150px;
+      height: auto;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+      transition: transform 0.3s ease;
+    }
+
+
+  .footer-logo:hover {
+    transform: scale(1.05); /* Subtle hover effect for the GIF */
+  }
+  .footer-bottom {
+  text-align: center;
+  margin: 40px auto 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(234, 238, 242, 0.2);
+  color: #31c4e6;
+  font-size: 13px;
+  max-width: 900px;
+  width: 90%;
+}
+    /* Chat interface styles */
+    #chat-icon {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      cursor: pointer;
+      z-index: 100;
+      background: linear-gradient(135deg, #005eb8, #00a3e0);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(0, 94, 184, 0.5);
+      transition: all 0.3s;
+    }
+
+    #chat-icon:hover {
+      transform: scale(1.1);
+    }
+
+    #chat-icon i {
+      color: white;
+      font-size: 24px;
+    }
+
+    #chat-interface {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 350px;
+      height: 446px;
+      border-radius: 15px;
+      background-color: white;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      display: none;
+      z-index: 100;
+      overflow: hidden;
+    }
+
+    #chat-header {
+      background: linear-gradient(135deg, #005eb8, #00a3e0);
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #chat-body {
+      padding: 15px;
+      height: 281px;
+      overflow-y: auto;
+      background-color: #f5f7fa;
+    }
+
+    #chat-footer {
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      background-color: white;
+      border-top: 1px solid #eee;
+    }
+
+    #chat-input {
+      flex: 1;
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 25px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    #chat-footer button {
+      margin-left: 10px;
+      padding: 8px 15px;
+      background: linear-gradient(135deg, #005eb8, #00a3e0);
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .user-message {
+      background-color: #e6f0ff;
+      color: #005eb8;
+      border-radius: 15px 15px 0 15px;
+      padding: 10px 15px;
+      margin: 10px 0 10px 30%;
+      max-width: 70%;
+      text-align: right;
+    }
+
+    .assistant-message {
+      background-color: #005eb8;
+      color: white;
+      border-radius: 15px 15px 15px 0;
+      padding: 10px 15px;
+      margin: 10px 30% 10px 0;
+      max-width: 70%;
+      text-align: left;
+    }
+
+    #language-selector {
+      padding: 10px 15px;
+      background-color: #f5f7fa;
+      border-bottom: 1px solid #eee;
+    }
+
+    #language-selector select {
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+  /* Minimal Dropdown Styles */
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropbtn {
+    background: transparent;
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 9px 25px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .dropbtn:hover {
+    color: rgba(255,255,255,0.9);
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background: white;
+    min-width: 240px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+    border-radius: 8px;
+    z-index: 1000;
+    top: 100%;
+    left: 0;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .dropdown-content a {
+    color: white;
+    padding: 12px 20px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    font-weight: 400;
+    transition: all 0.2s;
+    border-bottom: 1px solid rgba(0,0,0,0.03);
+    border-radius: 0; /* This makes the corners sharp */
+
+  }
+  
+  .dropdown-content a i {
+    width: 18px;
+    color: skyblue;
+    font-size: 18px;
+  }
+  
+  .dropdown-content a:last-child {
+    border-bottom: none;
+  }
+  
+  .dropdown-content a:hover {
+    background: #f8fafc;
+    color: #005eb8;
+    padding-left: 22px;
+  }
+  
+  /* Chevron animation */
+  .dropdown:hover .dropbtn i {
+    transform: rotate(180deg);
+  }
+  
+  .dropbtn i {
+    transition: transform 0.25s ease;
+    font-size: 12px;
+  }
+    /* Footer dropdown styles */
+  .footer-dropdown {
+    position: relative;
+    display: block;
+  }
+  
+  .footer-dropbtn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #f8fafc;
+    font-size: 14px;
+    margin-bottom: 8px;
+    text-decoration: none;
+    transition: color 0.2s;
+    padding-right: 5px;
+  }
+  
+  .footer-dropbtn:hover {
+    color: #2a90f0;
+  }
+  
+  .footer-dropdown-content {
+    display: none;
+    position: static;
+    background-color: transparent;
+    min-width: 160px;
+    padding-left: 15px;
+    margin-bottom: 8px;
+  }
+  
+  .footer-dropdown:hover .footer-dropdown-content {
+    display: block;
+  }
+  
+  .footer-solution-dropdown {
+    position: relative;
+  }
+  
+  .footer-solution-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #f8fafc;
+    font-size: 14px;
+    margin-bottom: 8px;
+    text-decoration: none;
+    transition: color 0.2s;
+    padding-right: 5px;
+  }
+  
+  .footer-solution-btn:hover {
+    color: #2a90f0;
+  }
+  
+  .footer-solution-content {
+    display: none;
+    position: static;
+    background-color: transparent;
+    min-width: 160px;
+    padding-left: 15px;
+    margin-bottom: 8px;
+  }
+  
+  .footer-solution-dropdown:hover .footer-solution-content {
+    display: block;
+  }
+  
+  .footer-dropbtn i,
+  .footer-solution-btn i {
+    font-size: 10px;
+    transition: transform 0.2s;
+  }
+  
+  .footer-dropdown:hover .footer-dropbtn i {
+    transform: rotate(180deg);
+  }
+  
+  .footer-solution-dropdown:hover .footer-solution-btn i {
+    transform: rotate(180deg);
+  }
+  .flashcards-section:nth-child(3){
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+  }
+
+  .social-icons {
+    justify-content: center;
+    margin-top: 8px;
+  }
+    /* Video Modal Styles */
+  .video-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    z-index: 3000;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .video-modal-content {
+    position: relative;
+    width: 80%;
+    max-width: 900px;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .video-modal-header {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    z-index: 10;
+  }
+
+  .video-modal-close {
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    background: rgba(0,0,0,0.5);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.3s;
+  }
+
+  .video-modal-close:hover {
+    background: rgba(0,0,0,0.8);
+  }
+
+  .video-modal-body {
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    position: relative;
+  }
+
+  .video-modal-body video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .video-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0,0,0,0.7);
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+
+  .video-controls button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px 10px;
+  }
+
+  .video-controls select {
+    padding: 5px;
+    border-radius: 4px;
+    background: #333;
+    color: white;
+    border: none;
+  }
+
+  .video-modal-content:hover .video-controls {
+    opacity: 1;
+  }
+  
+  </style>
+</head>
+<body>
+  <!-- Enhanced Login Popup -->
+  <div id="login-popup">
+    <div class="login-container">
+      <div class="login-header">
+        <img src="https://companieslogo.com/img/orig/CAP.PA_BIG-cbc06f01.png?t=1720244491" alt="Logo">
+        <h2>Welcome!</h2>
+        <p>Please login to access the platform</p>
+      </div>
+      <button class="login-btn" onclick="redirectToStreamlit()">
+        <i class="fas fa-sign-in-alt" style="margin-right: 8px;"></i> Login
+      </button>
+    </div>
+  </div>
+
+  <div class="top">
+    <video class="video-background" autoplay muted loop>
+      <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-a-network-connection-31206-large.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+
+    <header>
+      <div class="logo">
+        <img src="https://companieslogo.com/img/orig/CAP.PA_BIG-cbc06f01.png?t=1720244491" alt="OpenText Logo">
+      </div>
+      <div class="header-buttons">
+        <a href="#">Home</a>
+        <div class="dropdown">
+    <a href="#" class="dropbtn">Solutions <i class="fas fa-chevron-down"></i></a>
+    <div class="dropdown-content">
+      <a href="http://localhost:8502"><i class="fas fa-users"></i> Group & SubGroup</a>
+      <a href="http://localhost:8503"><i class="fas fa-folder-open"></i> Folder Creation</a>
+      <a href="http://localhost:8504"><i class="fas fa-lock"></i> Permissions</a>
+      <a href="http://localhost:8505"><i class="fas fa-tags"></i> Categories</a>
+      <a href="http://localhost:8506"><i class="fas fa-file-excel"></i> Excel Migration</a>
+    </div>
+  </div>
+  <a href="#" onclick="showContactPopup(); return false;">Contact</a>
+</div>
+    </header>
+
+    <div class="content">
+      <div class="text-content">
+        <img src="https://companieslogo.com/img/orig/OTEX-41cd4c50.png?t=1741951344" alt="OpenText Logo">
+        <div class="company-name">
+          OpenText Content Server
+        </div>
+        <div class="subtitle">
+          Limitless with AI
+        </div>
+        <a href="#solutions-section" class="get-started">Get Started</a>
+      </div>
+      <div class="video-container">
+        <video controls autoplay muted loop>
+          <source src="opentextvid.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  <div class="lower">
+    <div class="left-text">
+      <h1>Enterprise Content Management Solutions</h1>
+      <p>OpenText Content Server provides a comprehensive platform for managing enterprise content with security, compliance, and intelligent automation. Our solutions help organizations transform how they create, manage, and secure their critical business information.</p>
+    </div>
+
+    <div class="flashcards-section" id="solutions-section">
+      <div class="flashcards-container">
+        <div class="flashcard" style="background-image: url('https://solutions.opentext.com/wp-content/uploads/2025/06/image-3-connections-reimagined-1312x800-1.png')">
+          <i class="fas fa-users flashcard-icon"></i>
+          <h3>Group & SubGroup Creation</h3>
+          <p>Tool for structuring, creation and linking of groups and subgroups.</p>
+          <a href="http://localhost:8502"><button class="btn">Visit Tool</button></a>
+        </div>
+
+        <div class="flashcard" style="background-image: url('https://solutions.opentext.com/wp-content/uploads/2025/06/image-5-decisions-reimagined-1312x800-1.png')">
+          <i class="fas fa-folder-open flashcard-icon"></i>
+          <h3>Folder Creation</h3>
+          <p>Tool for streamlining folder setup for organized content management.</p>
+          <a href="http://localhost:8503"><button class="btn">Visit Tool</button></a>
+        </div>
+
+        <div class="flashcard" style="background-image: url('https://solutions.opentext.com/wp-content/uploads/2025/06/image-7-security-reimagined-1312x8001-1.png')">
+          <i class="fas fa-lock flashcard-icon"></i>
+          <h3>Permission Access Manager</h3>
+          <p>Tool for permission access control for secure content management.</p>
+          <a href="http://localhost:8504"><button class="btn">Visit Tool</button></a>
+        </div>
+
+        <div class="flashcard" style="background-image: url('https://solutions.opentext.com/wp-content/uploads/2025/06/image-1-knowledge-reimagined-1312x800-2.png')">
+          <i class="fas fa-tags flashcard-icon"></i>
+          <h3>Category Application Tool</h3>
+          <p>Tool for managing metadata categories on nodes for efficient content handling.</p>
+          <a href="http://localhost:8505"><button class="btn">Visit Tool</button></a>
+        </div>
+
+        <div class="flashcard" style="background-image: url('https://solutions.opentext.com/wp-content/uploads/2025/06/image-2-cloudops-reimagined-800x800-mobile.webp')">
+          <i class="fas fa-file-excel flashcard-icon"></i>
+          <h3>Migration through Excel</h3>
+          <p>Tool for migrating documents via Excel from local paths or public URLs.</p>
+          <a href="http://localhost:8506"><button class="btn">Visit Tool</button></a>
+        </div>
+      </div>
+      <div class="scroll-indicator">
+        Scroll to explore more tools <i class="fas fa-arrow-right"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+  <!-- Centered GIF Logo -->
+  <div class="footer-logo-container">
+    <img src="leaf (1).gif" alt="OpenText Logo" class="footer-logo">
+  </div>
+  
+  <!-- Centered Footer Content -->
+  <div class="footer-content-wrapper">
+    <div class="footer-content">
+      <div class="footer-section">
+  <h4>Resources</h4>
+  <div class="footer-dropdown">
+    <a href="javascript:void(0)" class="footer-dropbtn">Documentation <i class="fas fa-chevron-down"></i></a>
+    <div class="footer-dropdown-content">
+      <a href="pdfs/Group_OTCS.pdf">Group & SubGroup</a>
+      <a href="pdfs/Folder_creation.pdf">Folder Creation</a>
+      <a href="pdfs/permission manager.pdf">Permission Access</a>
+      <a href="pdfs/Category Application.pdf">Category Application</a>
+      <a href="pdfs/Migration.pdf">Excel Migration</a>
+  </div>
+</div>
+<!-- Demo Videos Submenu -->
+      <div class="footer-solution-dropdown">
+        <a href="javascript:void(0)" class="footer-solution-btn">Demo Videos <i class="fas fa-chevron-down"></i></a>
+        <div class="footer-solution-content">
+          <a href="videos/groupsub group creation.mp4" onclick="openVideoModal('Group & SubGroup')">Group & SubGroup</a>
+          <a href="videos/folder creation demo.mp4" onclick="openVideoModal('Folder Creation')">Folder Creation</a>
+          <a href="videos/permission access manager demo.mp4" onclick="openVideoModal('Permissions')">Permissions</a>
+          <a href="videos/Category Application Tool Recording .mp4" onclick="openVideoModal('Categories')">Categories</a>
+          <a href="videos/DemoVideo of Migration.mp4" onclick="openVideoModal('Excel Migration')">Excel Migration</a>
+        </div>
+      </div>
+    </div>
+      <div class="footer-section">
+        <h4>Legal</h4>
+        <a href="#">Terms</a>
+        <a href="#">Privacy</a>
+      </div>
+      <div class="footer-section">
+        <h4>Connect</h4>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Centered Footer Bottom -->
+  <div class="footer-bottom">
+  </div>
+</div>
+
+<!-- Video Modal -->
+<div class="video-modal" id="video-modal">
+  <div class="video-modal-content">
+    <div class="video-modal-header">
+      <span class="video-modal-close" onclick="closeVideoModal()">&times;</span>
+    </div>
+    <div class="video-modal-body">
+      <video id="modal-video" controls>
+        <source src="" type="video/mp4">
+        Your browser does not support the video element.
+      </video>
+    </div>
+    <div class="video-controls">
+      <button id="play-pause-btn" onclick="togglePlayPause()">Pause</button>
+      <select id="speed-select" onchange="changePlaybackSpeed()">
+        <option value="0.5">0.5x</option>
+        <option value="0.75">0.75x</option>
+        <option value="1" selected>Normal</option>
+        <option value="1.25">1.25x</option>
+        <option value="1.5">1.5x</option>
+        <option value="2">2x</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+  <div id="chat-icon" onclick="openChat()">
+    <i class="fas fa-comment-alt"></i>
+  </div>
+
+  <div id="chat-interface">
+    <div id="chat-header">
+      <h3>Content Server Assistant</h3>
+      <button onclick="closeChat()">X</button>
+    </div>
+    
+<!-- In the language selector section, replace with: -->
+<div id="language-selector">
+  <label for="language">Language: </label>
+  <select id="language">
+    <option value="en">English</option>
+    <option value="fr">French</option>
+    <option value="de">German</option>
+    <option value="es">Spanish</option>
+    <option value="hi">Hindi</option>
+    <option value="bn">Bengali</option>
+    <option value="ta">Tamil</option>
+    <option value="te">Telugu</option>
+    <option value="mr">Marathi</option>
+    <option value="gu">Gujarati</option>
+    <option value="kn">Kannada</option>
+    <option value="ml">Malayalam</option>
+    <option value="pa">Punjabi</option>
+    <option value="or">Odia</option>
+    <option value="ja">Japanese</option>
+    <option value="zh">Chinese</option>
+    <option value="ru">Russian</option>
+    <option value="ar">Arabic</option>
+  </select>
+</div>
+
+<!-- Update the initial assistant message in chat-body: -->
+<div id="chat-body">
+  <div class="assistant-message" id="initial-message"></div>
+</div>
+
+<!-- Add this script to handle language changes: -->
+<script>
+// Video Modal Functions
+// Video Modal Functions
+function openVideoModal(videoName) {
+  const modal = document.getElementById('video-modal');
+  const video = document.getElementById('modal-video');
+  
+  // Set video source based on selection
+  const videoSources = {
+    'Group & SubGroup': 'videos/Group & SubGroup.mp4',
+    'Folder Creation': 'videos/Folder Creation.mp4',
+    'Permissions': 'videos/Permissions.mp4',
+    'Categories': 'videos/Categories.mp4',
+    'Excel Migration': 'videos/Excel Migration.mp4'
+  };
+  
+  // Set the video source
+  video.src = videoSources[videoName];
+  
+  // Show the modal
+  modal.style.display = 'flex';
+  
+  // Reset play/pause button
+  document.getElementById('play-pause-btn').textContent = 'Play';
+  
+  // Load the video but don't auto-play
+  video.load();
+  
+  // Remove any existing error event listener
+  video.onerror = null;
+  
+  // Set up a new error event listener with a delay
+  video.onerror = function() {
+    console.error('Error loading video:', videoSources[videoName]);
+    // Don't show alert, just log to console
+  };
+  
+  // Set up event listener for when video is ready to play
+  video.oncanplay = function() {
+    // Enable play button
+    document.getElementById('play-pause-btn').disabled = false;
+  };
+}
+
+function closeVideoModal() {
+  const modal = document.getElementById('video-modal');
+  const video = document.getElementById('modal-video');
+  
+  // Pause the video
+  video.pause();
+  
+  // Reset the video source
+  video.src = '';
+  
+  // Hide the modal
+  modal.style.display = 'none';
+  
+  // Reset play/pause button
+  document.getElementById('play-pause-btn').textContent = 'Play';
+  
+  // Reset speed selector
+  document.getElementById('speed-select').value = '1';
+}
+
+function togglePlayPause() {
+  const video = document.getElementById('modal-video');
+  const button = document.getElementById('play-pause-btn');
+  
+  // Check if video has a source and is ready to play
+  if (video.src && video.readyState >= 2) {
+    if (video.paused) {
+      video.play().then(() => {
+        button.textContent = 'Pause';
+      }).catch(error => {
+        console.error('Error playing video:', error);
+        button.textContent = 'Play';
+      });
+    } else {
+      video.pause();
+      button.textContent = 'Play';
+    }
+  } else {
+    console.log('Video not ready to play yet');
+  }
+}
+
+function changePlaybackSpeed() {
+  const video = document.getElementById('modal-video');
+  const speedSelect = document.getElementById('speed-select');
+  
+  // Only change speed if video is loaded
+  if (video.src) {
+    video.playbackRate = parseFloat(speedSelect.value);
+  }
+}
+
+// Close modal when clicking outside the video content
+window.addEventListener('click', function(event) {
+  const modal = document.getElementById('video-modal');
+  if (event.target === modal) {
+    closeVideoModal();
+  }
+});
+
+// Update play/pause button based on video state
+document.getElementById('modal-video').addEventListener('play', function() {
+  document.getElementById('play-pause-btn').textContent = 'Pause';
+});
+
+document.getElementById('modal-video').addEventListener('pause', function() {
+  document.getElementById('play-pause-btn').textContent = 'Play';
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    closeVideoModal();
+  }
+});
+
+// Handle video errors without showing alerts
+document.getElementById('modal-video').addEventListener('error', function(e) {
+  console.error('Video error:', e);
+  // Don't show alert to user
+}); 
+</script>
+<script>
+  // Set initial greeting based on selected language
+  const languageGreetings = {
+    'en': 'Hello! How can I help you with OpenText Content Server today?',
+    'fr': 'Bonjour ! Comment puis-je vous aider avec OpenText Content Server aujourd\'hui ?',
+    'de': 'Hallo! Wie kann ich Ihnen heute mit OpenText Content Server helfen?',
+    'es': '¡Hola! ¿Cómo puedo ayudarte con OpenText Content Server hoy?',
+    'hi': 'नमस्ते! मैं आज आपको OpenText Content Server के साथ कैसे मदद कर सकता हूँ?',
+    'bn': 'হ্যালো! OpenText Content Server নিয়ে আজ আমি আপনাকে কিভাবে সাহায্য করতে পারি?',
+    'ta': 'வணக்கம்! இன்று OpenText Content Server உடன் நான் உங்களுக்கு எவ்வாறு உதவ முடியும்?',
+    'te': 'హలో! ఈరోజు OpenText Content Server తో నేను మీకు ఎలా సహాయం చేయగలను?',
+    'mr': 'नमस्कार! मी OpenText Content Server बद्दल तुम्हाला आज कशी मदत करू शकतो?',
+    'gu': 'હેલો! હું OpenText Content Server સાથે આજે તમને કેવી રીતે મદદ કરી શકું?',
+    'kn': 'ನಮಸ್ಕಾರ! OpenText Content Server ನೊಂದಿಗೆ ನಾನು ಇಂದು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಬಹುದು?',
+    'ml': 'ഹലോ! OpenText Content Server ഉപയോഗിച്ച് ഇന്ന് ഞാൻ നിങ്ങളെ എങ്ങനെ സഹായിക്കും?',
+    'pa': 'ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਮੈਂ OpenText Content Server ਨਾਲ ਤੁਹਾਡੀ ਅੱਜ ਕਿਵੇਂ ਮਦਦ ਕਰ ਸਕਦਾ ਹਾਂ?',
+    'or': 'ନମସ୍କାର! OpenText Content Server ସହିତ ମୁଁ ଆଜି ଆପଣଙ୍କୁ କିପରି ସାହାଯ୍ୟ କରିପାରିବି?',
+    'ja': 'こんにちは！今日はOpenText Content Serverについてどのようにお手伝いしましょうか？',
+    'zh': '你好！今天我能如何帮助您解决OpenText Content Server的问题？',
+    'ru': 'Здравствуйте! Как я могу помочь вам с OpenText Content Server сегодня?',
+    'ar': 'مرحبًا! كيف يمكنني مساعدتك في OpenText Content Server اليوم؟'
+  };
+
+  // Update greeting when language changes
+  document.getElementById('language').addEventListener('change', function() {
+    const selectedLanguage = this.value;
+    document.getElementById('initial-message').textContent = 
+      languageGreetings[selectedLanguage] || languageGreetings['en'];
+  });
+
+  // Set initial greeting
+  document.getElementById('initial-message').textContent = languageGreetings['en'];
+</script>
+    
+    <div id="chat-footer">
+      <input type="text" id="chat-input" placeholder="Ask about Content Server...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+  <!-- Contact Popup -->
+<div id="contact-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center;">
+  <div style="background: white; padding: 30px; border-radius: 10px; max-width: 500px; width: 90%;">
+    <h2 style="color: #005eb8; margin-bottom: 20px;">Contact Us</h2>
+    <div style="margin-bottom: 20px;">
+      <h3 style="color: #005eb8; margin-bottom: 10px;">Email</h3>
+      <p>support@opentext.com</p>
+      <p>sales@opentext.com</p>
+    </div>
+    <div style="margin-bottom: 20px;">
+      <h3 style="color: #005eb8; margin-bottom: 10px;">Phone</h3>
+      <p>+1 (800) 555-1234 (Toll-free)</p>
+      <p>+1 (519) 888-4567 (International)</p>
+    </div>
+    <div style="margin-bottom: 20px;">
+      <h3 style="color: #005eb8; margin-bottom: 10px;">Address</h3>
+      <p>OpenText Corporation</p>
+      <p>275 Frank Tompa Drive</p>
+      <p>Waterloo, Ontario, Canada</p>
+      <p>N2L 0A1</p>
+    </div>
+    <button onclick="closeContactPopup()" style="background: #005eb8; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Close</button>
+  </div>
+</div>
+
+<script>
+  // Check for successful login
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('login_success')) {
+    document.getElementById('login-popup').style.display = 'none';
+    history.replaceState({}, document.title, window.location.pathname);
+  } else {
+    document.getElementById('login-popup').style.display = 'flex';
+  }
+
+  function showContactPopup() {
+    document.getElementById('contact-popup').style.display = 'flex';
+  }
+
+  function closeContactPopup() {
+    document.getElementById('contact-popup').style.display = 'none';
+  }
+
+
+  function redirectToStreamlit() {
+    const currentUrl = 'http://localhost:8000/ui3.html';
+    window.location.href = `http://localhost:8501?return_url=${encodeURIComponent(currentUrl)}`;
+  }
+
+  function openChat() {
+    document.getElementById('chat-interface').style.display = 'block';
+  }
+
+  function closeChat() {
+    document.getElementById('chat-interface').style.display = 'none';
+  }
+
+  async function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const language = document.getElementById('language').value;
+    const text = input.value.trim();
+    const chatBody = document.getElementById('chat-body');
+
+    if (text !== '') {
+      // Add user message
+      const userMessage = document.createElement('div');
+      userMessage.textContent = text;
+      userMessage.classList.add('user-message');
+      chatBody.appendChild(userMessage);
+
+      // Add loading indicator
+      const loadingMessage = document.createElement('div');
+      loadingMessage.textContent = 'Thinking...';
+      loadingMessage.classList.add('assistant-message');
+      chatBody.appendChild(loadingMessage);
+      chatBody.scrollTop = chatBody.scrollHeight;
+
+      // Send query to Flask backend
+      try {
+        const response = await fetch('http://localhost:5000/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: text, language: language })
+        });
+        const data = await response.json();
+
+        // Remove loading indicator
+        chatBody.removeChild(loadingMessage);
+
+        // Add assistant response
+        const assistantMessage = document.createElement('div');
+        assistantMessage.classList.add('assistant-message');
+        if (data.error) {
+          assistantMessage.textContent = `Sorry, I encountered an error: ${data.error}. Please try again or contact OpenText support.`;
+        } else {
+          assistantMessage.textContent = data.response || 'No response received. Please try rephrasing your question.';
+        }
+        chatBody.appendChild(assistantMessage);
+      } catch (error) {
+        // Remove loading indicator
+        chatBody.removeChild(loadingMessage);
+
+        const assistantMessage = document.createElement('div');
+        assistantMessage.classList.add('assistant-message');
+        assistantMessage.textContent = 'Sorry, I couldn’t connect to the server. Please check your connection or try again later.';
+        chatBody.appendChild(assistantMessage);
+      }
+
+      input.value = '';
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+  }
+
+  // Handle Enter key
+  document.getElementById('chat-input').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+      sendMessage();
+    }
+  });
+</script>
